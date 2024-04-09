@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CurrencyExchange.Services.AccountAPI.Migrations
+namespace UserService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240403074947_LoginRecordUpdated")]
-    partial class LoginRecordUpdated
+    [Migration("20240406141559_initialDB2")]
+    partial class initialDB2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,49 +24,6 @@ namespace CurrencyExchange.Services.AccountAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CurrencyExchange.Services.AccountAPI.Models.Account", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AccountPassword")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar");
-
-                    b.Property<string>("AccountUsername")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar");
-
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(11,2)");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CurrencyCode")
-                        .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("OwnerName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar");
-
-                    b.Property<DateTime>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Account", (string)null);
-                });
 
             modelBuilder.Entity("CurrencyExchange.Services.AccountAPI.Models.AccountHistory", b =>
                 {
@@ -134,21 +91,97 @@ namespace CurrencyExchange.Services.AccountAPI.Migrations
                     b.ToTable("LoginRecord", (string)null);
                 });
 
+            modelBuilder.Entity("CurrencyExchange.Services.AccountAPI.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OwnerName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User", (string)null);
+                });
+
+            modelBuilder.Entity("UserService.Models.AccountBalance", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(11,2)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("AccountBalance", (string)null);
+                });
+
             modelBuilder.Entity("CurrencyExchange.Services.AccountAPI.Models.AccountHistory", b =>
                 {
-                    b.HasOne("CurrencyExchange.Services.AccountAPI.Models.Account", "Account")
+                    b.HasOne("CurrencyExchange.Services.AccountAPI.Models.User", "User")
                         .WithMany("AccountHistories")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Account");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CurrencyExchange.Services.AccountAPI.Models.LoginRecord", b =>
                 {
-                    b.HasOne("CurrencyExchange.Services.AccountAPI.Models.Account", "Account")
+                    b.HasOne("CurrencyExchange.Services.AccountAPI.Models.User", "User")
                         .WithMany("LoginRecords")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("UserService.Models.AccountBalance", b =>
+                {
+                    b.HasOne("CurrencyExchange.Services.AccountAPI.Models.User", "Account")
+                        .WithMany("AccountBalances")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -156,8 +189,10 @@ namespace CurrencyExchange.Services.AccountAPI.Migrations
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("CurrencyExchange.Services.AccountAPI.Models.Account", b =>
+            modelBuilder.Entity("CurrencyExchange.Services.AccountAPI.Models.User", b =>
                 {
+                    b.Navigation("AccountBalances");
+
                     b.Navigation("AccountHistories");
 
                     b.Navigation("LoginRecords");

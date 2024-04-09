@@ -4,6 +4,7 @@ using CurrencyExchange.Services.AccountAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace UserService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240406135735_initialDB")]
+    partial class initialDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,6 +97,16 @@ namespace UserService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AccountPassword")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<string>("AccountUsername")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
@@ -105,22 +118,12 @@ namespace UserService.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar");
-
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar");
-
                     b.HasKey("Id");
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("Account", (string)null);
                 });
 
             modelBuilder.Entity("UserService.Models.AccountBalance", b =>

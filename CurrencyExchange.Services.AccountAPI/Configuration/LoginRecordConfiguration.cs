@@ -12,7 +12,7 @@ namespace CurrencyExchange.Services.AccountAPI.Configuration
             builder.Property(x => x.LoginIP).HasColumnType("nvarchar").HasMaxLength(15).IsRequired();
             builder.Property(x => x.LoginLocation).HasColumnType("nvarchar").HasMaxLength(60).IsRequired();
 
-            builder.HasOne(x => x.Account).WithMany(x => x.LoginRecords).HasForeignKey(x => x.AccountId);
+            builder.HasOne(x => x.User).WithMany(x => x.LoginRecords).HasForeignKey(x => x.AccountId);
              
             builder.ToTable("LoginRecord");
 

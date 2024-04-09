@@ -1,9 +1,10 @@
 ﻿using CurrencyExchange.Services.AccountAPI.Interfaces;
 using CurrencyExchange.Services.AccountAPI.Models;
+using Services.UserService.Models;
 
 namespace CurrencyExchange.Services.AccountAPI.Repositories
 {
-    public class AccountRepository : IAccountRepository
+    public class AccountRepository : IUserRepository
     {
         private readonly AppDbContext _context;
 
@@ -12,9 +13,11 @@ namespace CurrencyExchange.Services.AccountAPI.Repositories
             _context = context;
         }
 
-        public Account Login(string accountUsername, string accountPassword)
+        public User Login(string accountUsername, string accountPassword)
         {
-            return _context.Accounts.FirstOrDefault(x => x.AccountPassword == accountPassword && x.AccountUsername == accountUsername);
+            return _context.Users.FirstOrDefault(x => x.Password == accountPassword && x.Username == accountUsername);
         }
+
+         
     }
 }

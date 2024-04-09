@@ -1,4 +1,5 @@
 ﻿using Common.Enums;
+using Services.UserService.Models;
 
 namespace CurrencyExchange.Services.AccountAPI.Models
 {
@@ -8,7 +9,7 @@ namespace CurrencyExchange.Services.AccountAPI.Models
         public string Definition { get; set; }
         public Guid AccountId { get; set; }
 
-        public Account Account { get; set; }
+        public User User { get; set; }
 
     }
 }

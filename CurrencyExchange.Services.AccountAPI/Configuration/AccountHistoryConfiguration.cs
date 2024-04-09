@@ -15,7 +15,7 @@ namespace CurrencyExchange.Services.AccountAPI.Configuration
              
 
 
-            builder.HasOne(x => x.Account).WithMany(x => x.AccountHistories).HasForeignKey(x => x.AccountId);
+            builder.HasOne(x => x.User).WithMany(x => x.AccountHistories).HasForeignKey(x => x.AccountId);
 
             builder.ToTable(nameof(AccountHistory));
         }

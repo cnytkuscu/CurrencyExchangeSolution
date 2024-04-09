@@ -1,4 +1,6 @@
-﻿namespace CurrencyExchange.Services.AccountAPI.Models
+﻿using Services.UserService.Models;
+
+namespace CurrencyExchange.Services.AccountAPI.Models
 {
     public class LoginRecord : BaseEntity
     {
@@ -8,6 +10,6 @@
 
         public Guid AccountId { get; set; }
 
-        public Account Account { get; set; }
+        public User User { get; set; }
     }
 }

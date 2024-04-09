@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using CurrencyExchange.Services.AccountAPI.Models;
+using Services.UserService.Models;
 
 namespace CurrencyExchange.Services.AccountAPI
 {
@@ -11,7 +12,7 @@ namespace CurrencyExchange.Services.AccountAPI
         {
         }
 
-        public DbSet<Account> Accounts { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<LoginRecord> LoginRecords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
